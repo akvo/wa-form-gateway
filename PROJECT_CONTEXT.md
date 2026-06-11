@@ -39,23 +39,29 @@ python-dotenv    # Environment config
 ## Project Structure (Planned)
 
 ```
-wa_form_gateway/
-├── main.py              # FastAPI entry
-├── config.py            # Settings
-├── database/
-│   ├── models.py        # Session, Response, FormCache
-│   └── session.py       # DB connection
-├── whatsapp/
-│   ├── webhook.py       # Receive messages
-│   ├── sender.py        # Send messages
-│   └── renderer.py      # Question → WhatsApp format
-├── conversation/
-│   ├── engine.py        # Flow control
-│   ├── session.py       # State management
-│   └── validator.py     # Response validation
-└── adapters/
-    ├── base.py          # Abstract interface
-    └── kobo.py          # Kobo implementation
+wa-form-gateway/
+├── Dockerfile
+├── docker-compose.yml
+├── pyproject.toml
+├── .env.example
+└── wa_form_gateway/
+    ├── __init__.py
+    ├── main.py              # FastAPI entry
+    ├── config.py            # Settings
+    ├── database/
+    │   ├── models.py        # Session, Response, FormCache
+    │   └── session.py       # DB connection
+    ├── whatsapp/
+    │   ├── webhook.py       # Receive messages
+    │   ├── sender.py        # Send messages
+    │   └── renderer.py      # Question → WhatsApp format
+    ├── conversation/
+    │   ├── engine.py        # Flow control
+    │   ├── session.py       # State management
+    │   └── validator.py     # Response validation
+    └── adapters/
+        ├── base.py          # Abstract interface
+        └── kobo.py          # Kobo implementation
 ```
 
 ## Phase 1 Scope (MVP)
@@ -86,7 +92,8 @@ wa_form_gateway/
 
 ## Next Step
 
-Start Phase 1.1: Project Setup & Configuration
-- Initialize Python package
-- Set up FastAPI skeleton
-- Create config management
+Start Phase 1.1: Project Setup, Configuration & Docker
+- Initialize Python package (`pyproject.toml`)
+- Set up FastAPI skeleton with health endpoint
+- Create config management (pydantic settings)
+- Docker setup (Dockerfile, docker-compose.yml)

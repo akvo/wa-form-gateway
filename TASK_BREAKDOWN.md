@@ -50,12 +50,12 @@ A deployable Python service that enables data collection via WhatsApp conversati
 
 ## Phase 1: Foundation & Core Infrastructure
 
-### 1.1 Project Setup & Configuration
+### 1.1 Project Setup, Configuration & Docker
 
-**Task:** Initialize Python project with minimal dependencies and configuration management
+**Task:** Initialize Python project with minimal dependencies, configuration management, and Docker setup
 
 **User AC:**
-- Project can be cloned and set up with `pip install -e .`
+- Project can be cloned and set up with `pip install -e .` or `docker-compose up`
 - Configuration via environment variables or `.env` file
 - Clear documentation for initial setup
 
@@ -93,8 +93,13 @@ A deployable Python service that enables data collection via WhatsApp conversati
       ├── base.py          # Abstract adapter interface
       └── kobo.py          # Kobo implementation
   ```
+- Docker setup:
+  - `Dockerfile` with Python 3.11+ base image
+  - `docker-compose.yml` with app service and optional PostgreSQL
+  - Volume for database persistence
+  - Health check endpoint (`/health`)
 
-**Estimate:** 0.5 day (with AI-assisted development)
+**Estimate:** 3 hours
 
 **Risk / Considerations:**
 - Keep dependencies minimal for easier deployment
@@ -149,7 +154,7 @@ A deployable Python service that enables data collection via WhatsApp conversati
   - `expire_stale_sessions()`
 - Implement session timeout (configurable, default 24h)
 
-**Estimate:** 0.5 day (with AI-assisted development)
+**Estimate:** 2 hours
 
 **Risk / Considerations:**
 - Phone numbers must be normalized (E.164 format)
@@ -185,7 +190,7 @@ A deployable Python service that enables data collection via WhatsApp conversati
   - `interactive.list_reply` - List selection
 - Logging for debugging
 
-**Estimate:** 1 day (with AI-assisted development)
+**Estimate:** 4 hours
 
 **Risk / Considerations:**
 - Meta requires HTTPS with valid certificate
@@ -235,7 +240,7 @@ A deployable Python service that enables data collection via WhatsApp conversati
   - Validation errors
   - Completion confirmation
 
-**Estimate:** 1 day (with AI-assisted development)
+**Estimate:** 4 hours
 
 **Risk / Considerations:**
 - Button text max 20 characters
@@ -272,7 +277,7 @@ A deployable Python service that enables data collection via WhatsApp conversati
 - Re-send question with error hint on failure
 - Track retry count (optional: max retries before skip/cancel)
 
-**Estimate:** 0.5 day (with AI-assisted development)
+**Estimate:** 2 hours
 
 **Risk / Considerations:**
 - Users may send voice messages (not supported initially)
@@ -316,7 +321,7 @@ A deployable Python service that enables data collection via WhatsApp conversati
   - `/restart` - Restart current form
 - Handle "out of band" messages during form fill
 
-**Estimate:** 1-1.5 days (with AI-assisted development)
+**Estimate:** 8 hours
 
 **Risk / Considerations:**
 - Must handle concurrent messages from same user
@@ -366,7 +371,7 @@ A deployable Python service that enables data collection via WhatsApp conversati
       def submit(self, form_id: str, responses: dict) -> SubmissionResult
   ```
 
-**Estimate:** 0.5 day (with AI-assisted development)
+**Estimate:** 2 hours
 
 **Risk / Considerations:**
 - Not all Kobo question types can be mapped to WhatsApp
@@ -404,7 +409,7 @@ A deployable Python service that enables data collection via WhatsApp conversati
     - Others → skip or `text` fallback
 - Cache form definitions (avoid repeated API calls)
 
-**Estimate:** 1 day (with AI-assisted development)
+**Estimate:** 4 hours
 
 **Risk / Considerations:**
 - Kobo API rate limits
@@ -442,7 +447,7 @@ A deployable Python service that enables data collection via WhatsApp conversati
 - Implement retry mechanism (3 attempts with backoff)
 - Store submission ID from Kobo for reference
 
-**Estimate:** 0.5 day (with AI-assisted development)
+**Estimate:** 2 hours
 
 **Risk / Considerations:**
 - Kobo may reject submissions if required fields missing
@@ -451,38 +456,9 @@ A deployable Python service that enables data collection via WhatsApp conversati
 
 ---
 
-## Phase 5: Deployment & Operations
+## Phase 5: Operations & Deployment
 
-### 5.1 Docker Containerization
-
-**Task:** Create Docker setup for easy deployment
-
-**User AC:**
-- Service can be deployed with `docker-compose up`
-- Configuration via environment variables
-- Persistent data survives container restarts
-
-**Tech AC:**
-- `Dockerfile`:
-  - Python 3.11+ base image
-  - Install dependencies
-  - Run with uvicorn
-- `docker-compose.yml`:
-  - App service
-  - PostgreSQL service (optional, SQLite default)
-  - Volume for database persistence
-- Health check endpoint (`/health`)
-- Graceful shutdown handling
-
-**Estimate:** 0.5 day (with AI-assisted development)
-
-**Risk / Considerations:**
-- SQLite in Docker needs volume mount
-- Consider memory limits for container
-
----
-
-### 5.2 Webhook Registration & HTTPS Setup
+### 5.1 Webhook Registration & HTTPS Setup
 
 **Task:** Document and/or automate Meta webhook setup
 
@@ -500,7 +476,7 @@ A deployable Python service that enables data collection via WhatsApp conversati
 - Nginx/Caddy example configs
 - Cloudflare tunnel option for development
 
-**Estimate:** 0.5 day (with AI-assisted development)
+**Estimate:** 2 hours
 
 **Risk / Considerations:**
 - Meta requires verified business for production
@@ -510,7 +486,7 @@ A deployable Python service that enables data collection via WhatsApp conversati
 
 ---
 
-### 5.3 Logging, Monitoring & Error Handling
+### 5.2 Logging, Monitoring & Error Handling
 
 **Task:** Implement operational observability
 
@@ -536,7 +512,7 @@ A deployable Python service that enables data collection via WhatsApp conversati
   - Meta API connectivity
   - Kobo API connectivity
 
-**Estimate:** 0.5 day (with AI-assisted development)
+**Estimate:** 2 hours
 
 **Risk / Considerations:**
 - Don't log full phone numbers (privacy)
@@ -568,7 +544,7 @@ A deployable Python service that enables data collection via WhatsApp conversati
 - pytest configuration
 - CI pipeline (GitHub Actions)
 
-**Estimate:** 1 day (with AI-assisted development)
+**Estimate:** 8 hours
 
 **Risk / Considerations:**
 - Meta webhook testing requires mocks
@@ -600,38 +576,37 @@ A deployable Python service that enables data collection via WhatsApp conversati
   - Common issues
   - Debug mode
 
-**Estimate:** 0.5 day (with AI-assisted development)
+**Estimate:** 3 hours
 
 ---
 
 ## Summary & Estimates
 
-> **Note:** Estimates assume AI-assisted development (Claude Code). Manual development would require approximately 2-2.5x the listed time.
+> **Note:** Estimates assume AI-assisted development (Claude Code). Manual development would require approximately 2-3x the listed time.
 
 | Phase | Task | Estimate |
 |-------|------|----------|
 | **1. Foundation** | | |
-| 1.1 | Project Setup & Configuration | 0.5 day |
-| 1.2 | Database Models & Session Management | 0.5 day |
+| 1.1 | Project Setup, Configuration & Docker | 3h |
+| 1.2 | Database Models & Session Management | 2h |
 | **2. WhatsApp Integration** | | |
-| 2.1 | Webhook Endpoint & Message Receiver | 1 day |
-| 2.2 | Message Sender & Question Renderer | 1 day |
-| 2.3 | Response Validation | 0.5 day |
+| 2.1 | Webhook Endpoint & Message Receiver | 4h |
+| 2.2 | Message Sender & Question Renderer | 4h |
+| 2.3 | Response Validation | 2h |
 | **3. Conversation Engine** | | |
-| 3.1 | Conversation Flow Controller | 1-1.5 days |
-| 3.2 | Form Definition Parser | 0.5 day |
+| 3.1 | Conversation Flow Controller | 8h |
+| 3.2 | Form Definition Parser | 2h |
 | **4. Kobo Adapter** | | |
-| 4.1 | Kobo API Client | 1 day |
-| 4.2 | Kobo Submission Push | 0.5 day |
-| **5. Deployment** | | |
-| 5.1 | Docker Containerization | 0.5 day |
-| 5.2 | Webhook & HTTPS Setup | 0.5 day* |
-| 5.3 | Logging & Monitoring | 0.5 day |
+| 4.1 | Kobo API Client | 4h |
+| 4.2 | Kobo Submission Push | 2h |
+| **5. Operations & Deployment** | | |
+| 5.1 | Webhook & HTTPS Setup | 2h |
+| 5.2 | Logging & Monitoring | 2h |
 | **6. Testing & Docs** | | |
-| 6.1 | Test Suite | 1 day |
-| 6.2 | Documentation | 0.5 day |
+| 6.1 | Test Suite | 8h |
+| 6.2 | Documentation | 3h |
 | | | |
-| **TOTAL (Development)** | | **~10 days** |
+| **TOTAL (Development)** | | **~46h (6 days)** |
 | **External/Blocking** | Meta Business verification, testing with real WhatsApp | **+2-5 days*** |
 
 \* *External dependencies (Meta verification, webhook setup, real device testing) may add calendar time regardless of development speed.*
